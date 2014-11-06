@@ -14,3 +14,4 @@ cabal.sandbox.config
 *.swp
 /.dist-buildwrapper/
 *.project
+/.idea/
