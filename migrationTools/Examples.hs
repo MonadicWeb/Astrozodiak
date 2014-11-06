@@ -10,7 +10,7 @@ mean' xs = mean'' xs 0 0 where
     mean'' [] !lengthAcc !sumAcc     = lengthAcc / sumAcc
 
 palindrome' :: [a] -> [a]
-palindrome' lst = lst ++ (reverse lst)
+palindrome' lst = lst ++ reverse lst
 -- length' xs = length'' 0 xs where
 --     length'' !acc (x:xs) = length'' (acc + 1) xs
 --     length'' !acc [] = acc
@@ -39,24 +39,24 @@ isPalindrome lst = isPalindrome' lst [] [] where
     isPalindrome' []     e  l  = trace'' ("False - a:[] b:" ++ show e ++ " c:" ++ show l) False
     isPalindrome' [el]   [] [] = trace'' ("False - a:" ++ show el ++ " b:[] c:[]") False
     isPalindrome' (x:y:xs) e [] 
-        | x == y && null e = trace' 1 $ isPalindrome' xs     (x:e) []
-        | x == y           = trace' 2 $ isPalindrome' xs     [x]   (e ++ reverse e)
-        | otherwise        = trace' 3 $ isPalindrome' (y:xs) e     [x] where
-        trace' indx a = trace'' (show (indx) ++ " a:" ++ show (x:y:xs) ++ " b:" ++ show e ++ " c:[]") a
+        | x /= y    = trace' 3 $ isPalindrome' (y:xs) e     [x]
+        | null e    = trace' 1 $ isPalindrome' xs     (x:e) []
+        | otherwise = trace' 2 $ isPalindrome' xs     [x]   (e ++ reverse e) where
+        trace' indx = trace'' (show indx ++ " a:" ++ show (x:y:xs) ++ " b:" ++ show e ++ " c:[]")
     isPalindrome' (x:xs) e (l:left)
         | x == l    = trace' 11 $ isPalindrome' xs     (x:e) left
         | null e    = trace' 12 $ isPalindrome' xs     []    (x : l : left)
         | otherwise = trace' 13 $ isPalindrome' (x:xs) []    (e ++ reverse e ++ (l : left)) where
-            trace' indx a = trace'' (show (indx) ++ " a:" ++ show (x:xs) ++ " b:" ++ show e ++ " c:" ++ show (l:left)) a
+            trace' indx = trace'' (show indx ++ " a:" ++ show (x:xs) ++ " b:" ++ show e ++ " c:" ++ show (l:left))
 
 main = do
     --print "start"
-    print $ (reverse [] :: [Int])
-    print $ (isPalindrome ([] :: [Int])) == True
-    print $ isPalindrome [2] == False
-    print $ isPalindrome [2,2,3,2,2] == False
-    print $ isPalindrome [2,2,3,3,2,2] == True
-    print $ isPalindrome [4,1,2,2,1,5] == False
-    print $ isPalindrome [4,1,2,2,1,4] == True
-    print $ isPalindrome [4,1,2,3,2,1,4] == False
-    print $ (isPalindrome $ palindrome' [4,1,2,2,1]) == True
+    print (reverse [] :: [Int])
+    print (isPalindrome ([] :: [Int]))
+    print $ not $ isPalindrome [2]
+    print $ not $ isPalindrome [2,2,3,2,2]
+    print $ isPalindrome [2,2,3,3,2,2]
+    print $ not $ isPalindrome [4,1,2,2,1,5]
+    print $ isPalindrome [4,1,2,2,1,4]
+    print $ not $ isPalindrome [4,1,2,3,2,1,4]
+    print $ isPalindrome (palindrome' [4,1,2,2,1])
